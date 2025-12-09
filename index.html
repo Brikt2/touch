@@ -1,1 +1,25 @@
 
+<!DOCTYPE html>
+<html>
+<head>
+        <meta charset="UTF-8">
+        <title>Touch-skjerm</title>
+</head>
+<body>
+        <h1>Kontrollpanel</h1>
+        <button id="timeplan-knapp">Timeplan</button>
+
+        <script>
+                const knapp = document.getElementById("timeplan-knapp");
+                knapp.addEventListener("click", () => {
+                        fetch("/api/timeplan", { method: "POST" })
+                                .then(response => response.json())
+                                .then (data => {
+                                        console.log("Status", data.status);
+                                })
+                                .catch(err => console.error(err));
+                });
+        </script>
+
+</body>
+</html>
