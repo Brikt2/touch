@@ -4,10 +4,59 @@
 <head>
         <meta charset="UTF-8">
         <title>Touch-skjerm</title>
+        <style>
+                *{
+                        overflow: hidden;
+                        box-sizing: border-box;
+                        padding: 0px;
+                        margin: 0px;
+                        border: none;
+                }
+                body{
+                        background-color: black;
+                }
+                #knapper {
+                        display: grid;
+                        row-gap: 10px;
+                        column-gap: 10px;
+                        padding: 10px;
+                        grid-template-columns: auto auto;
+                        grid-template-rows: 1fr 1fr 1fr;
+                }
+                button {
+                        padding: 20px;
+                        aspect-ratio: 1/1;
+                }
+                #timeplan-knapp {
+                        background-color: blue;
+                }
+                #knapp2 {
+                        background-color: violet;
+                }
+                #knapp3 {
+                        background-color: red;
+                }
+                #knapp4 {
+                        background-color: green;
+                }
+                #knapp5 {
+                        background-color: orange;
+                }
+                #knapp6 {
+                        background-color: yellow;
+                }
+
+        </style>
 </head>
 <body>
-        <h1>Kontrollpanel</h1>
-        <button id="timeplan-knapp">Timeplan</button>
+        <div id="knapper">
+                <button id="timeplan-knapp">Timeplan</button>
+                <button id="knapp2">Kommer...</button>
+                <button id="knapp3">Kommer...</button>
+                <button id="knapp4">Kommer...</button>
+                <button id="knapp5">Kommer...</button>
+                <button id="knapp6">Kommer...</button>
+        </div>
 
         <script>
                 const knapp = document.getElementById("timeplan-knapp");
