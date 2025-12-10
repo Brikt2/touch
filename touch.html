@@ -27,7 +27,13 @@
                 }
                 button {
                         padding: 20px;
-
+                        filter: brightness(0.9);
+                        font-size: 30px;
+                }
+                button:hover {
+                        filter: brightness(0.5);
+                        color: white;
+                        cursor: pointer;
                 }
                 #timeplan-knapp {
                         background-color: blue;
@@ -63,13 +69,16 @@
         <script>
                 const knapp = document.getElementById("timeplan-knapp");
                 knapp.addEventListener("click", () => {
-                        fetch("/api/timeplan", { method: "POST" })
-                                .then(response => response.json())
-                                .then (data => {
-                                        console.log("Status", data.status);
-                                })
-                                .catch(err => console.error(err));
+                        function setImage(name) {
+                                fetch("/api/skjerm", {
+                                method: "POST",
+                                headers: {"Content-Type": "application/json"},
+                                body: JSON.stringify({show: name})
+                        });
+}
                 });
+
+                
         </script>
 
 </body>
