@@ -67,15 +67,13 @@
         </div>
 
         <script>
-                const knapp = document.getElementById("timeplan-knapp");
-                knapp.addEventListener("click", () => {
-                        function setImage(name) {
-                                fetch("/api/skjerm", {
+                const knapp1 = document.getElementById("timeplan-knapp");
+                knapp1.addEventListener("click", () => {
+                        fetch("/api/skjerm", {
                                 method: "POST",
                                 headers: {"Content-Type": "application/json"},
-                                body: JSON.stringify({show: name})
-                        });
-}
+                                body: JSON.stringify({show: timeplan})
+                        });   
                 });
 
                 

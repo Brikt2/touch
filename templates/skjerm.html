@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MP-skjermen</title>
+    <style>
+
+    </style>
+</head>
+<body>
+    
+    <div id="innhold"></div>
+
+
+
+    <script>
+        const innhold = document.getElementById("innhold");
+        let forrigeValg = null;
+        async function sjekk() {
+            try {
+            let r = await fetch("/api/skjerm");
+            let data = await r.json();
+            let valg = data.show;
+            if (valg !== forrigeValg) {
+                forrigeValg = valg;
+                innhold.innerHTML = "";
+                if (valg === "timeplan") {
+                    const timeplan = document.createElement("img");
+                    timeplan.src = "/bilder/timeplan.jpg";
+                    innhold.appendChild(timeplan);
+                }
+            }
+        } catch (err) {
+            console.error("Feil:", err);
+        }
+        setTimeout(sjekk, 500);
+    }
+    sjekk();
+    </script>
+    <script>
+    
+
+   
