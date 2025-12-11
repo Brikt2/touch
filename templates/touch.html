@@ -67,6 +67,7 @@
         </div>
 
         <script>
+                let resetTimeout
                 const knapp1 = document.getElementById("timeplan-knapp");
                 knapp1.addEventListener("click", () => {
                         fetch("/api/skjerm", {
