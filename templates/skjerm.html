@@ -129,12 +129,12 @@
                 forrigeValg = valg;
                 innhold.innerHTML = "";
                 if (valg === null) {
-                    const klokke = document.createElement("klokka");
-                    klokke.setAttribute("display", "flex")
+                    const klokke = document.getElementById("klokka");
+                    klokke.style.display="flex"
                 }
                 else if (valg === "timeplan") {
-                    const klokke = document.createElement("klokka");
-                    klokke.setAttribute("display", "none")
+                    const klokke = document.getElementById("klokka");
+                    klokke.style.display="none"
                     const timeplan = document.createElement("img");
                     timeplan.src = "/bilder/timeplan.jpg";
                     innhold.appendChild(timeplan);
