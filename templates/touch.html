@@ -1,83 +1,29 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-        <meta charset="UTF-8">
-        <title>Touch-skjerm</title>
-        <style>
-                *{
-                        overflow: hidden;
-                        box-sizing: border-box;
-                        padding: 0px;
-                        margin: 0px;
-                        border: none;
-                }
-                body{
-                        background-color: black;
-                }
-                #knapper {
-                        display: grid;
-                        column-gap: 30px;
-                        padding: 30px;
-                        grid-template-columns: auto auto auto;
-                        grid-template-rows: auto auto;
-                        height: 100vh;
-                        width: 100vw;
-                        row-gap: 30px;
-                }
-                button {
-                        padding: 20px;
-                        filter: brightness(0.9);
-                        font-size: 30px;
-                }
-                button:hover {
-                        filter: brightness(0.5);
-                        color: white;
-                        cursor: pointer;
-                }
-                #timeplan-knapp {
-                        background-color: blue;
-                }
-                #knapp2 {
-                        background-color: violet;
-                }
-                #knapp3 {
-                        background-color: red;
-                }
-                #knapp4 {
-                        background-color: green;
-                }
-                #knapp5 {
-                        background-color: orange;
-                }
-                #knapp6 {
-                        background-color: yellow;
-                }
-
-        </style>
+    <meta charset="UTF-8">
+    <title>Touch Test</title>
 </head>
 <body>
-        <div id="knapper">
-                <button id="timeplan-knapp">Timeplan</button>
-                <button id="knapp2">Kommer...</button>
-                <button id="knapp3">Kommer...</button>
-                <button id="knapp4">Kommer...</button>
-                <button id="knapp5">Kommer...</button>
-                <button id="knapp6">Kommer...</button>
-        </div>
+    <h1>Test POST til Flask</h1>
+    <button id="knapp">Vis bilde</button>
 
-        <script>
-                const knapp1 = document.getElementById("timeplan-knapp");
-                knapp1.addEventListener("click", () => {
-                        fetch("/api/skjerm", {
-                                method: "POST",
-                                headers: {"Content-Type": "application/json"},
-                                body: JSON.stringify({show: timeplan})
-                        });   
-                });
+    <script>
+        const knapp = document.getElementById("knapp");
 
-                
-        </script>
-
+        knapp.addEventListener("click", () => {
+            fetch("/api/skjerm", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({show: "timeplan.png"})
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Respons fra server:", data);
+                alert("Respons: " + JSON.stringify(data));
+            })
+            .catch(err => console.error(err));
+        });
+    </script>
 </body>
 </html>
