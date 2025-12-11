@@ -74,6 +74,16 @@
                                 headers: {"Content-Type": "application/json"},
                                 body: JSON.stringify({show: timeplan})
                         });   
+                        if (resetTimeout) clearTimeout(resetTimeout);
+
+                        resetTimeout = setTimeout(() => {
+                                fetch("/api/skjerm", {
+                                        method: "POST",
+                                        headers: {"Content-Type": "application/json"},
+                                        body: JSON.stringify({show: null})
+                                });
+                                resetTimeout = null;
+                        }, 120000);
                 });
 
                 

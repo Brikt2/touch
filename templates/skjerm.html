@@ -8,6 +8,7 @@
             box-sizing: border-box; 
             margin: 0; 
             padding: 0; 
+            overflow: hidden;
         }
 
         :root{
@@ -17,7 +18,11 @@
             --accent: #0ea5a4;
         }
 
-        html,body{
+        body,html {
+            height: 100%;
+        }
+
+        #klokka{
             height:100%;
             background: linear-gradient(180deg,var(--bg), #071020 90%);
             color:var(--text);
@@ -96,7 +101,8 @@
 </head>
 <body>
     
-    <div id="innhold">
+    <div id="innhold"></div>
+    <div id="klokka">
         <div class="wrap">
             <div class="clock" role="region" aria-label="Digital klokke, 24 timers format">
                 <div>
@@ -111,17 +117,6 @@
             </div>
         </div>
     </div>
-  
-
-<script>
-
-</script>
-</body>
-</html>
-    </div>
-
-
-
     <script>
         const innhold = document.getElementById("innhold");
         let forrigeValg = null;
@@ -133,7 +128,13 @@
             if (valg !== forrigeValg) {
                 forrigeValg = valg;
                 innhold.innerHTML = "";
-                if (valg === "timeplan") {
+                if (valg === null) {
+                    const klokke = document.createElement("klokka");
+                    klokke.setAttribute("display", "flex")
+                }
+                else if (valg === "timeplan") {
+                    const klokke = document.createElement("klokka");
+                    klokke.setAttribute("display", "none")
                     const timeplan = document.createElement("img");
                     timeplan.src = "/bilder/timeplan.jpg";
                     innhold.appendChild(timeplan);
@@ -143,38 +144,42 @@
             console.error("Feil:", err);
         }
         setTimeout(sjekk, 500);
-    }
-    sjekk();
-    (function(){
-    const elHours = document.getElementById('hours');
-    const elMinutes = document.getElementById('minutes');
+        }
+        sjekk();
 
-    const two = n => String(n).padStart(2,'0');
+        (function(){
+            const elHours = document.getElementById('hours');
+            const elMinutes = document.getElementById('minutes');
 
-    function updateClock() {
-        const now = new Date();
-        const h = now.getHours();     
-        const m = now.getMinutes();   
+            const two = n => String(n).padStart(2,'0');
 
-        if (elHours.textContent !== two(h)) elHours.textContent = two(h);
-        if (elMinutes.textContent !== two(m)) elMinutes.textContent = two(m);
-    }
+            function updateClock() {
+                const now = new Date();
+                const h = now.getHours();     
+                const m = now.getMinutes();   
 
-    updateClock();
+                if (elHours.textContent !== two(h)) elHours.textContent = two(h);
+                if (elMinutes.textContent !== two(m)) elMinutes.textContent = two(m);
+            }
 
-    function scheduleNext() {
-        const now = new Date();
-        const msToNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
-        setTimeout(() => {
-        updateClock();
-        setInterval(updateClock, 60 * 1000);
-        }, msToNextMinute);
-    }
+            updateClock();
 
-    scheduleNext();
-    })(); 
+            function scheduleNext() {
+                const now = new Date();
+                const msToNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+                setTimeout(() => {
+                updateClock();
+                setInterval(updateClock, 60 * 1000);
+                }, msToNextMinute);
+            }
+
+            scheduleNext();
+        })(); 
+
+
+
     </script>
-    <script>
     
-
+</body>
+</html>
    
