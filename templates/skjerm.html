@@ -130,10 +130,10 @@
                 innhold.innerHTML = "";
                 if (valg === null) {
                     const klokke = document.getElementById("klokka");
-                    klokke.style.display="flex"
+                    klokke.style.display="block"
                 }
                 else if (valg === "timeplan") {
-                    const klokke = document.getElementById("block");
+                    const klokke = document.getElementById("klokka");
                     klokke.style.display="none"
                     const timeplan = document.createElement("img");
                     timeplan.src = "/static/timeplan.jpg";
