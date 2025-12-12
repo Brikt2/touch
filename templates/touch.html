@@ -73,7 +73,7 @@
                         fetch("/api/skjerm", {
                                 method: "POST",
                                 headers: {"Content-Type": "application/json"},
-                                body: JSON.stringify({show: timeplan})
+                                body: JSON.stringify({show: "timeplan"})
                         });   
                         if (resetTimeout) clearTimeout(resetTimeout);
 
