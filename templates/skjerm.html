@@ -20,6 +20,13 @@
 
         body,html {
             height: 100%;
+            width: 100%;
+        }
+
+        #format {
+            rotate: -90deg;
+            width: 100%;
+            height: 100%;
         }
 
         #klokka{
@@ -49,7 +56,6 @@
             display:flex;
             align-items:center;
             justify-content:center;
-            rotate: -90deg;
         }
 
         .time {
@@ -104,9 +110,8 @@
             width: 100%;
         }
         img {
-            height: 100%;
-            width: auto;
-            rotate: -90deg;
+            height: auto;
+            width: 100%;
         }
 
 
@@ -115,17 +120,18 @@
     </style>
 </head>
 <body>
-    
-    <div id="innhold"></div>
-    <div id="klokka">
-        <div class="wrap">
-            <div class="clock" role="region" aria-label="Digital klokke, 24 timers format">
-                <div>
-                    <div class="time" aria-live="polite" aria-atomic="true">
-                        <div class="hhmm">
-                            <div id="hours" class="digits">00</div>
-                            <div class="colon" aria-hidden="true">:</div>
-                            <div id="minutes" class="digits">00</div>
+    <div id="format">
+        <div id="innhold"></div>
+        <div id="klokka">
+            <div class="wrap">
+                <div class="clock" role="region" aria-label="Digital klokke, 24 timers format">
+                    <div>
+                        <div class="time" aria-live="polite" aria-atomic="true">
+                            <div class="hhmm">
+                                <div id="hours" class="digits">00</div>
+                                <div class="colon" aria-hidden="true">:</div>
+                                <div id="minutes" class="digits">00</div>
+                            </div>
                         </div>
                     </div>
                 </div>
