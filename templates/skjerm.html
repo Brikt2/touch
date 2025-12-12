@@ -24,18 +24,14 @@
         }
         
         #format {
-            /*
             position: absolute;
             top: 0;
             left: 0;
-            */
             width: 100vh;
             height: 100vw;
-            /*
             transform: rotate(-90deg);
             transform-origin: top left;
-            */
-            }
+        }
         
 
         #klokka{
@@ -129,16 +125,18 @@
     </style>
 </head>
 <body>
-    <div id="innhold"></div>
-    <div id="klokka">
-        <div class="wrap">
-            <div class="clock" role="region" aria-label="Digital klokke, 24 timers format">
-                <div>
-                    <div class="time" aria-live="polite" aria-atomic="true">
-                        <div class="hhmm">
-                            <div id="hours" class="digits">00</div>
-                            <div class="colon" aria-hidden="true">:</div>
-                            <div id="minutes" class="digits">00</div>
+    <div id="format">
+        <div id="innhold"></div>
+        <div id="klokka">
+            <div class="wrap">
+                <div class="clock" role="region" aria-label="Digital klokke, 24 timers format">
+                    <div>
+                        <div class="time" aria-live="polite" aria-atomic="true">
+                            <div class="hhmm">
+                                <div id="hours" class="digits">00</div>
+                                <div class="colon" aria-hidden="true">:</div>
+                                <div id="minutes" class="digits">00</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -159,10 +157,14 @@
                 if (valg === null) {
                     const klokke = document.getElementById("klokka");
                     klokke.style.display="block"
+                    const innhold = document.getElementById("innhold");
+                    innhold.style.display="none"
                 }
                 else if (valg === "timeplan") {
                     const klokke = document.getElementById("klokka");
                     klokke.style.display="none"
+                    const innhold = document.getElementById("innhold");
+                    innhold.style.display="block"
                     const timeplan = document.createElement("img");
                     timeplan.src = "/static/timeplan.jpg";
                     innhold.appendChild(timeplan);
