@@ -184,6 +184,19 @@
                     timeplan.src = "/static/timeplan.jpg";
                     innhold.appendChild(timeplan);
                 }
+                else if (valg === "juletre") {
+                    const klokke = document.getElementById("klokka");
+                    klokke.style.display="none"
+                    const innhold = document.getElementById("innhold");
+                    innhold.style.display="flex"
+                    const juletre_animasjon = document.createElement("video");
+                    juletre_animasjon.setAttribute("autoplay")
+                    juletre_animasjon.setAttribute("loop")
+                    const animasjon_fil = document.createElement("source")
+                    animasjon_fil.setAttribute("src","/static/juletre.mp4")
+                    juletre_animasjon.appendChild(animasjon_fil)
+                    innhold.appendChild(juletre_animasjon);
+                }
             }
         } catch (err) {
             console.error("Feil:", err);
