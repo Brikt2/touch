@@ -1,16 +1,93 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <meta charset="UTF-8">
+    <title>Touch-skjerm</title>
+    <style>
+        * {
+            overflow: hidden;
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            border: none;
+        }
+
+        body {
+            background-color: black;
+        }
+
+        #knapper {
+            width: 100%;
+            height: 100vh;
+            padding: 30px;
+        }
+
+        .knapp-wrapper {
+            width: 33.3333%;
+            height: 50%;
+            float: left;
+            padding: 15px;
+        }
+
+        button {
+            width: 100%;
+            height: 100%;
+            font-size: 30px;
+            filter: brightness(0.9);
+        }
+
+        button:active {
+            filter: brightness(0.5);
+            color: white;
+        }
+
+        #timeplan-knapp { background-color: blue; }
+        #knapp2 { background-color: violet; }
+        #knapp3 { background-color: red; }
+        #knapp4 { background-color: green; }
+        #knapp5 { background-color: orange; }
+        #knapp6 { background-color: yellow; }
+    </style>
+</head>
+
 <body>
 
-<form method="POST" action="/ui">
-  <input type="hidden" name="show" value="timeplan">
-  <button style="font-size:40px">Timeplan</button>
-</form>
+<div id="knapper">
 
-<form method="POST" action="/ui">
-  <input type="hidden" name="show" value="info">
-  <button style="font-size:40px">Info</button>
-</form>
+    <div class="knapp-wrapper">
+        <form method="POST" action="/ipad1">
+            <input type="hidden" name="show" value="timeplan">
+            <button id="timeplan-knapp" type="submit">Timeplan</button>
+        </form>
+    </div>
+
+    <div class="knapp-wrapper">
+        <form method="POST" action="/ipad1">
+            <input type="hidden" name="show" value="juletre">
+            <button id="knapp2" type="submit">Kommer...</button>
+        </form>
+    </div>
+
+    <div class="knapp-wrapper">
+        <form method="POST" action="/ipad1">
+            <input type="hidden" name="show" value="">
+            <button id="knapp3" type="submit">Kommer...</button>
+        </form>
+    </div>
+
+    <div class="knapp-wrapper">
+        <button id="knapp4">Kommer...</button>
+    </div>
+
+    <div class="knapp-wrapper">
+        <button id="knapp5">Kommer...</button>
+    </div>
+
+    <div class="knapp-wrapper">
+        <button id="knapp6">Kommer...</button>
+    </div>
+
+</div>
 
 </body>
 </html>

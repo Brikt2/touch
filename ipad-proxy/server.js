@@ -1,27 +1,34 @@
 const express = require("express");
 const fetch = require("node-fetch");
+
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static("public")); // HTML-skjema for iPad
+app.use(express.static("public")); // her ligger ipad.html
 
-// Proxy-endepunkt
-app.post("/ui", async (req, res) => {
+app.post("/ipad1", async (req, res) => {
+  
+
   try {
-    // Send videre til Flask
     await fetch("http://127.0.0.1:5000/api/skjerm", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(req.body)
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        show: req.body.show
+      })
     });
 
-    // Bekreft til iPad
-    res.send("OK");
-  } catch (e) {
-    console.error("Feil i proxy:", e);
+    res.redirect("/ipad.html");
+
+  } catch (err) {
+    console.error("Proxy-feil:", err);
     res.status(500).send("FEIL");
   }
 });
 
-app.listen(3000, () => console.log("Proxy kjører på port 3000"));
+app.listen(3000, () => {
+  console.log("Node-proxy kjører på port 3000");
+});
