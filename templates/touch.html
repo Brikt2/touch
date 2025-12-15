@@ -68,32 +68,37 @@
 
         <script>
                 let resetTimeout
+                let synlig = false
                 const knapp1 = document.getElementById("timeplan-knapp");
                 knapp1.addEventListener("click", () => {
-                        knapp1.addEventListener("click", () => {
-                                fetch("/api/skjerm", {
+                        synlig = !synlig
+                        if (synlig === true) {
+                               fetch("/api/skjerm", {
                                         method: "POST",
                                         headers: {"Content-Type": "application/json"},
-                                        body: JSON.stringify({show: null})
-                                });
-                        });
+                                        body: JSON.stringify({show: "timeplan"})
+                                });   
+                                if (resetTimeout) clearTimeout(resetTimeout);
 
-                        fetch("/api/skjerm", {
-                                method: "POST",
-                                headers: {"Content-Type": "application/json"},
-                                body: JSON.stringify({show: "timeplan"})
-                        });   
-                        if (resetTimeout) clearTimeout(resetTimeout);
-
-                        resetTimeout = setTimeout(() => {
-                                fetch("/api/skjerm", {
-                                        method: "POST",
-                                        headers: {"Content-Type": "application/json"},
-                                        body: JSON.stringify({show: null})
-                                });
-                                resetTimeout = null;
-                        }, 120000);
+                                resetTimeout = setTimeout(() => {
+                                        fetch("/api/skjerm", {
+                                                method: "POST",
+                                                headers: {"Content-Type": "application/json"},
+                                                body: JSON.stringify({show: null})
+                                        });
+                                        resetTimeout = null;
+                                }, 120000);       
+                        } 
+                        else {
+                               fetch("/api/skjerm", {
+                                                method: "POST",
+                                                headers: {"Content-Type": "application/json"},
+                                                body: JSON.stringify({show: null})
+                                        }); 
+                        }
+                        
                 });
+
                 const knapp2 = document.getElementById("knapp2");
                 knapp2.addEventListener("click", () => {
                         fetch("/api/skjerm", {
