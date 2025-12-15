@@ -18,7 +18,7 @@ def skjerm():
         return render_template('skjerm.html')
 
 @app.route('/ipad')
-def skjerm():
+def ipad():
         return render_template('ipad.html')
 
 @app.get('/api/skjerm')
