@@ -21,7 +21,6 @@ app.post("/ipad1", async (req, res) => {
       await sendToApi(show);
     }
 
-    // 👇 VIKTIG: redirect til statisk fil
     res.redirect("/ipad.html");
 
   } catch (err) {
