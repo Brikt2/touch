@@ -104,18 +104,10 @@
                         fetch("/api/skjerm", {
                                 method: "POST",
                                 headers: {"Content-Type": "application/json"},
-                                body: JSON.stringify({show: "juletre"})
+                                body: JSON.stringify({show: "dagsplan"})
                         });   
                 });
-                const knapp3 = document.getElementById("knapp3");
-                knapp3.addEventListener("click", () => {
-                        fetch("/api/skjerm", {
-                                method: "POST",
-                                headers: {"Content-Type": "application/json"},
-                                body: JSON.stringify({show: null})
-                        });   
-                });
-
+                
                 
         </script>
 

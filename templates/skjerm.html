@@ -1,243 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>MP-skjermen</title>
-    <style>
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            overflow: hidden;
-        }
+    <head>
+	<meta charset="UTF-8">
+	<title>MP-skjermen</title>
+	<style>
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    overflow: hidden;
+}
 
-        :root{
-            --bg: #0f1724;
-            --panel: #0b1220;
-            --text: #e6eef8;
-            --accent: #0ea5a4;
-        }
+	:root{
+	    --bg: #0f1724;
+	    --panel: #0b1220;
+	    --text: #e6eef8;
+	    --accent: #0ea5a4;
+	}
 
-        body,html {
-            height: 100%;
+	body,html {
+	    height: 100%;
 
-        }
-        
-        #format {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100vh;  /* merk: bytter vh/vw etter rotasjon */
-            height: 100vw;
-            transform: rotate(-90deg) translateX(-100%);
-            transform-origin: top left;
-        }
+	}
 
-        #innhold, #klokka {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
+	#format {
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    width: 100vh;  /* merk: bytter vh/vw etter rotasjon */
+	    height: 100vw;
+	    transform: rotate(-90deg) translateX(-100%);
+	    transform-origin: top left;
+	}
 
-        
-
-        #klokka{
-            height:100%;
-            background: linear-gradient(180deg,var(--bg), #071020 90%);
-            color:var(--text);
-            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-            -webkit-font-smoothing:antialiased;
-            -moz-osx-font-smoothing:grayscale;
-        }
-
-        .wrap {
-            min-height:100%;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            padding:24px;
-        }
-
-        .clock {
-            width: min(860px, 92vw);
-            max-width: 1200px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-            border-radius:18px;
-            box-shadow: 0 10px 30px rgba(2,6,23,0.6);
-            padding: clamp(20px, 4vw, 40px);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-        }
-
-        .time {
-            display:flex;
-            align-items:center;
-            gap: clamp(12px, 2.4vw, 28px);
-        }
-
-        .hhmm {
-            display:flex;
-            align-items:center;
-            gap: clamp(8px, 1.6vw, 18px);
-            font-weight: 700;
-            color: var(--text);
-            letter-spacing: -0.02em;
-        }
-
-        .digits {
-            font-size: clamp(40px, 10vw, 160px); 
-            line-height: 0.9;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .colon {
-            font-size: clamp(40px, 10vw, 160px);
-            line-height: 0.9;
-            color: var(--accent);
-            animation: blink 1s steps(1, start) infinite;
-            display:inline-block;
-            width: .35em;
-            text-align:center;
-        }
-
-        @keyframes blink {
-            50% { opacity: 0; transform: translateY(-2%); }
-        }
-
-        .meta {
-            margin-top: 10px;
-            font-size: clamp(12px, 1.6vw, 18px);
-            color: rgba(230,238,248,0.7);
-            text-align:center;
-        }
-
-        @media (max-width:420px){
-            .clock { padding: 12px; border-radius: 12px; }
-            .hhmm { gap: 8px; }
-        }
-
-        #innhold {
-            height: 100%;
-            width: 100%;
-            background-image: linear-gradient(180deg,var(--bg), #071020 90%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        img {
-            padding: 10px;
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-        }
+	#innhold, #klokka {
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	}
 
 
 
+	#klokka{
+	    height:100%;
+	    background: linear-gradient(180deg,var(--bg), #071020 90%);
+	    color:var(--text);
+	    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+	    -webkit-font-smoothing:antialiased;
+	    -moz-osx-font-smoothing:grayscale;
+	}
 
-    </style>
-</head>
-<body>
-    <div id="format">
-        <div id="innhold"></div>
-        <div id="klokka">
-            <div class="wrap">
-                <div class="clock" role="region" aria-label="Digital klokke, 24 timers format">
-                    <div>
-                        <div class="time" aria-live="polite" aria-atomic="true">
-                            <div class="hhmm">
-                                <div id="hours" class="digits">00</div>
-                                <div class="colon" aria-hidden="true">:</div>
-                                <div id="minutes" class="digits">00</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        const innhold = document.getElementById("innhold");
-        let forrigeValg = null;
-        async function sjekk() {
-            try {
-            let r = await fetch("/api/skjerm");
-            let data = await r.json();
-            let valg = data.show;
-            if (valg !== forrigeValg) {
-                forrigeValg = valg;
-                innhold.innerHTML = "";
-                if (valg === null) {
-                    const klokke = document.getElementById("klokka");
-                    klokke.style.display="flex"
-                    const innhold = document.getElementById("innhold");
-                    innhold.style.display="none"
-                }
-                else if (valg === "timeplan") {
-                    const klokke = document.getElementById("klokka");
-                    klokke.style.display="none"
-                    const innhold = document.getElementById("innhold");
-                    innhold.style.display="flex"
-                    const timeplan = document.createElement("img");
-                    timeplan.src = "/static/timeplan.jpg";
-                    innhold.appendChild(timeplan);
-                }
-                else if (valg === "juletre") {
-                    const klokke = document.getElementById("klokka");
-                    klokke.style.display="none"
-                    const innhold = document.getElementById("innhold");
-                    innhold.style.display="flex"
-                    const juletre_animasjon = document.createElement("video");
-                    juletre_animasjon.setAttribute("autoplay")
-                    juletre_animasjon.setAttribute("loop")
-                    const animasjon_fil = document.createElement("source")
-                    animasjon_fil.setAttribute("src","/static/juletre.mp4")
-                    juletre_animasjon.appendChild(animasjon_fil)
-                    innhold.appendChild(juletre_animasjon);
-                }
-            }
-        } catch (err) {
-            console.error("Feil:", err);
-        }
-        setTimeout(sjekk, 500);
-        }
-        sjekk();
+	.wrap {
+	    min-height:100%;
+	    display:flex;
+	    align-items:center;
+	    justify-content:center;
+	    padding:24px;
+	}
 
-        (function(){
-            const elHours = document.getElementById('hours');
-            const elMinutes = document.getElementById('minutes');
+	.clock {
+	    width: min(860px, 92vw);
+	    max-width: 1200px;
+	    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+	    border-radius:18px;
+	    box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+	    padding: clamp(20px, 4vw, 40px);
+	    display:flex;
+	    align-items:center;
+	    justify-content:center;
+	}
 
-            const two = n => String(n).padStart(2,'0');
+	.time {
+	    display:flex;
+	    align-items:center;
+	    gap: clamp(12px, 2.4vw, 28px);
+	}
 
-            function updateClock() {
-                const now = new Date();
-                const h = now.getHours();     
-                const m = now.getMinutes();   
+	.hhmm {
+	    display:flex;
+	    align-items:center;
+	    gap: clamp(8px, 1.6vw, 18px);
+	    font-weight: 700;
+	    color: var(--text);
+	    letter-spacing: -0.02em;
+	}
 
-                if (elHours.textContent !== two(h)) elHours.textContent = two(h);
-                if (elMinutes.textContent !== two(m)) elMinutes.textContent = two(m);
-            }
+	.digits {
+	    font-size: clamp(40px, 10vw, 160px); 
+	    line-height: 0.9;
+	    font-variant-numeric: tabular-nums;
+	}
 
-            updateClock();
+	.colon {
+	    font-size: clamp(40px, 10vw, 160px);
+	    line-height: 0.9;
+	    color: var(--accent);
+	    animation: blink 1s steps(1, start) infinite;
+	    display:inline-block;
+	    width: .35em;
+	    text-align:center;
+	}
 
-            function scheduleNext() {
-                const now = new Date();
-                const msToNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
-                setTimeout(() => {
-                updateClock();
-                setInterval(updateClock, 60 * 1000);
-                }, msToNextMinute);
-            }
+	@keyframes blink {
+	    50% { opacity: 0; transform: translateY(-2%); }
+	}
 
-            scheduleNext();
-        })(); 
+	.meta {
+	    margin-top: 10px;
+	    font-size: clamp(12px, 1.6vw, 18px);
+	    color: rgba(230,238,248,0.7);
+	    text-align:center;
+	}
+
+	@media (max-width:420px){
+	    .clock { padding: 12px; border-radius: 12px; }
+	    .hhmm { gap: 8px; }
+	}
+
+	#innhold {
+	    height: 100%;
+	    width: 100%;
+	    background-image: linear-gradient(180deg,var(--bg), #071020 90%);
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	}
+	img {
+	    padding: 10px;
+	    max-width: 100%;
+	    max-height: 100%;
+	    object-fit: contain;
+	}
 
 
 
-    </script>
-    
-</body>
+
+	</style>
+    </head>
+    <body>
+	<div id="format">
+	    <div id="innhold"></div>
+	    <div id="klokka">
+		<div class="wrap">
+		    <div class="clock" role="region" aria-label="Digital klokke, 24 timers format">
+			<div>
+			    <div class="time" aria-live="polite" aria-atomic="true">
+				<div class="hhmm">
+				    <div id="hours" class="digits">00</div>
+				    <div class="colon" aria-hidden="true">:</div>
+				    <div id="minutes" class="digits">00</div>
+				</div>
+			    </div>
+			</div>
+		    </div>
+		</div>
+	    </div>
+	</div>
+	<script>
+	    const innhold = document.getElementById("innhold");
+	    let forrigeValg = null;
+	    async function sjekk() {
+		try {
+		    let r = await fetch("/api/skjerm");
+		    let data = await r.json();
+		    let valg = data.show;
+		    if (valg !== forrigeValg) {
+			forrigeValg = valg;
+			innhold.innerHTML = "";
+			if (valg === null) {
+			    const klokke = document.getElementById("klokka");
+			    klokke.style.display="block"
+			    const innhold = document.getElementById("innhold");
+			    innhold.innerHTML="";
+			    innhold.style.display="none"
+			    
+			}
+			else if (valg === "timeplan") {
+			    const klokke = document.getElementById("klokka");
+			    klokke.style.display="none"
+			    const innhold = document.getElementById("innhold");
+			    innhold.style.display="flex"
+			    const timeplan = document.createElement("img");
+			    timeplan.src = "/static/timeplan.jpg";
+			    innhold.appendChild(timeplan);
+			}
+			else if (valg === "dagsplan") {
+			    const today = new Date();
+			    const daysOfWeek = ["søndag", "mandag", "tirsdag", "onsdag", "torsdag", "fredag", "lørdag"];
+			    const ukedag = daysOfWeek[today.getDay()];
+			    const klokke = document.getElementById("klokka");
+			    klokke.style.display="none"
+			    const innhold = document.getElementById("innhold");
+			    innhold.style.display="flex"
+
+			    if (ukedag === mandag) {
+				const  dagsplan= document.createElement("img");
+				dagsplan.src = "/static/timeplan_mandag.png";
+				innhold.appendChild(dagsplan);
+			    }
+			    else if (ukedag === tirsdag) {
+				const  dagsplan= document.createElement("img");
+				dagsplan.src = "/static/timeplan_tirsdag.png";
+				innhold.appendChild(dagsplan);
+			    }
+			    else if (ukedag === onsdag) [
+				const  dagsplan= document.createElement("img");
+				dagsplan.src = "/static/timeplan_onsdag.png";
+				innhold.appendChild(dagsplan);
+			    }
+			    else if (ukedag === torsdag) {
+				const  dagsplan= document.createElement("img");
+				dagsplan.src = "/static/timeplan_torsdag.png";
+				innhold.appendChild(dagsplan);
+			    }
+			    else if (ukedag === fredag) {
+				const  dagsplan= document.createElement("img");
+				dagsplan.src = "/static/timeplan_fredag.png";
+				innhold.appendChild(dagsplan);
+			    }
+
+			}
+		    }
+		} catch (err) {
+		    console.error("Feil:", err);
+		}
+		setTimeout(sjekk, 500);
+	    }
+	    sjekk();
+
+	    (function(){
+		const elHours = document.getElementById('hours');
+		const elMinutes = document.getElementById('minutes');
+
+		const two = n => String(n).padStart(2,'0');
+
+		function updateClock() {
+		    const now = new Date();
+		    const h = now.getHours();     
+		    const m = now.getMinutes();   
+
+		    if (elHours.textContent !== two(h)) elHours.textContent = two(h);
+		    if (elMinutes.textContent !== two(m)) elMinutes.textContent = two(m);
+		}
+
+		updateClock();
+
+		function scheduleNext() {
+		    const now = new Date();
+		    const msToNextMinute = (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+		    setTimeout(() => {
+			updateClock();
+			setInterval(updateClock, 60 * 1000);
+		    }, msToNextMinute);
+		}
+
+		scheduleNext();
+	    })(); 
+
+
+
+	</script>
+
+    </body>
 </html>
-   
+
