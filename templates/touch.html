@@ -101,11 +101,31 @@
 
                 const knapp2 = document.getElementById("knapp2");
                 knapp2.addEventListener("click", () => {
-                        fetch("/api/skjerm", {
-                                method: "POST",
-                                headers: {"Content-Type": "application/json"},
-                                body: JSON.stringify({show: "dagsplan"})
-                        });   
+                        synlig = !synlig
+                        if (synlig === true) {
+                               fetch("/api/skjerm", {
+                                        method: "POST",
+                                        headers: {"Content-Type": "application/json"},
+                                        body: JSON.stringify({show: "dagsplan"})
+                                });   
+                                if (resetTimeout) clearTimeout(resetTimeout);
+
+                                resetTimeout = setTimeout(() => {
+                                        fetch("/api/skjerm", {
+                                                method: "POST",
+                                                headers: {"Content-Type": "application/json"},
+                                                body: JSON.stringify({show: null})
+                                        });
+                                        resetTimeout = null;
+                                }, 120000);       
+                        } 
+                        else {
+                               fetch("/api/skjerm", {
+                                                method: "POST",
+                                                headers: {"Content-Type": "application/json"},
+                                                body: JSON.stringify({show: null})
+                                        }); 
+                        }
                 });
                 
                 
